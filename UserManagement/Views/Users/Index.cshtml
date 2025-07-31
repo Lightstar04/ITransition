@@ -1,0 +1,42 @@
+﻿@model IEnumerable<UserManagement.ViewModels.User.UserView>
+
+<h2 class="row justify-content-center">Users</h2>
+<form method="post" asp-action="Action">
+    <div class="toolbar m-1 column-gap-5">
+        <button name="operation" value="block" class="btn btn-outline-danger">Block</button>
+        <button name="operation" value="unblock" title="Unblock" class="btn btn-outline-success">🔓</button>
+        <button name="operation" value="delete" title="Delete" class="btn btn-outline-warning">🗑</button>
+        <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-secondary">Logout</a>
+    </div>
+    <table class="table table-bordered table-striped mt-3" dataSource="ViewBag.Users">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="select-all" onclick="toggle(this)"/></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Last seen</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td><input type="checkbox" name="selected" value="@user.Id" /></td>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@user.LastLoginTime.ToString("g")</td>
+                    <td>@(user.Status.ToString())</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+<script>
+    function toggle(source) {
+        checkboxes = document.getElementsByName('selected');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>

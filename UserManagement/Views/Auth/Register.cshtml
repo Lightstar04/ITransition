@@ -1,0 +1,17 @@
+﻿@model UserManagement.ViewModels.User.RegisterUserView
+
+@{
+    ViewBag.Title = "Register";
+}
+<h2 class="row justify-content-center pt-5">Register</h2>
+<div class="row justify-content-center pt-3">
+    <div class="col-md-4 p-2">
+        <form method="post">
+            <input type="text" name="FullName" placeholder="FullName" required class="form-control mb-2" />
+            <input type="email" name="email" placeholder="Email" required class="form-control mb-2" />
+            <input type="password" name="password" placeholder="Password" required class="form-control mb-2" />
+            <button class="btn btn-primary mt-1">Register</button>
+        </form>
+    </div>
+</div>
+@Html.ValidationSummary()
