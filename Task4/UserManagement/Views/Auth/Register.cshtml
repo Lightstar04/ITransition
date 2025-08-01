@@ -2,16 +2,22 @@
 
 @{
     ViewBag.Title = "Register";
+    var errorMessage = ViewData["ErrorMessage"];
 }
-<h2 class="row justify-content-center pt-5">Register</h2>
-<div class="row justify-content-center pt-3">
-    <div class="col-md-4 p-2">
-        <form method="post">
-            <input type="text" name="FullName" placeholder="FullName" required class="form-control mb-2" />
-            <input type="email" name="email" placeholder="Email" required class="form-control mb-2" />
-            <input type="password" name="password" placeholder="Password" required class="form-control mb-2" />
-            <button class="btn btn-primary mt-1">Register</button>
-        </form>
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="widget p-5 mt-5" style="background-color:#54598D">
+            <div class="mb-3 d-flex align-items-center flex-column">
+                <h2 class="text-light">Register</h2>
+                <span class="text-danger fs-6">@errorMessage</span>
+            </div>
+            <form method="post" class="row justify-content-center mb-2 p-2">
+                <input type="text" name="FullName" placeholder="FullName" required class="form-control mb-2 w-75" />
+                <input type="email" name="email" placeholder="Email" required class="form-control mb-2 w-75" />
+                <input type="password" name="password" placeholder="Password" required class="form-control mb-2 w-75" />
+                <button class="btn btn-success w-50 mt-2">Register</button>
+            </form>
+        </div>
     </div>
 </div>
 @Html.ValidationSummary()

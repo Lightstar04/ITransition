@@ -36,8 +36,9 @@ namespace UserManagement.Controllers
                 _store.SignUp(entity);
                 return RedirectToAction("Login");
             }
-            catch
+            catch(Exception ex)
             {
+                ViewData["ErrorMessage"] = "User already exists";
                 return View();
             }
         }
@@ -49,9 +50,11 @@ namespace UserManagement.Controllers
         public IActionResult Login(string email, string password)
         {
             var result = _store.SignIn(email, password);
-            if(!result)
+            
+            if (!result)
             {
-                return RedirectToAction("Login");
+                ViewData["ErrorMessage"] = "Password is wrong. Please try again!";
+                return View();
             }
 
             HttpContext.Session.SetString("UserEmail", email);

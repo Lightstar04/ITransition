@@ -44,14 +44,9 @@ namespace UserManagement.Stores
             
             var user = context.Users.FirstOrDefault(u => u.Email == email);
 
-            if (user == null || user.Status == UserStatus.Blocked)
+            if (user == null || user.Status == UserStatus.Blocked || user.Password != password)
             {
                 return false;
-            }
-
-            if(user.Password != password)
-            {
-                throw new InvalidCredentialException("Password is wrong");
             }
 
             user.LastLoginTime = DateTime.Now;
