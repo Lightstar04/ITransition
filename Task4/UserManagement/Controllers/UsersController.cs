@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UserManagement.Domain.Entities;
-using UserManagement.Domain.Enums;
+using UserManagement.Enums;
 using UserManagement.Extensions;
 using UserManagement.Stores;
 
@@ -10,9 +9,9 @@ namespace UserManagement.Controllers
     {
         private readonly UsersStore _store;
 
-        public UsersController()
+        public UsersController(UsersStore store)
         {
-            _store = new UsersStore();
+            _store = store;
         }
 
         public IActionResult Index(string? search)

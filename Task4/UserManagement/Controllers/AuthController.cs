@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UserManagement.Domain.Entities;
+using UserManagement.Entities;
 using UserManagement.Extensions;
 using UserManagement.Stores;
 using UserManagement.ViewModels.User;
@@ -13,9 +12,9 @@ namespace UserManagement.Controllers
         private readonly UsersStore _store;
         private readonly IPasswordHasher<User> _hasher;
 
-        public AuthController()
+        public AuthController(UsersStore store)
         {
-            _store = new UsersStore();
+            _store = store;
             _hasher = new PasswordHasher<User>();
         }
 
@@ -53,7 +52,7 @@ namespace UserManagement.Controllers
             
             if (!result)
             {
-                ViewData["ErrorMessage"] = "Password is wrong. Please try again!";
+                ViewData["ErrorMessage"] = "Password is wrong or you might be blocked. Please try again!";
                 return View();
             }
 

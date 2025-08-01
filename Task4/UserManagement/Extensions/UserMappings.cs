@@ -1,4 +1,4 @@
-﻿using UserManagement.Domain.Entities;
+﻿using UserManagement.Entities;
 using UserManagement.ViewModels.User;
 
 namespace UserManagement.Extensions

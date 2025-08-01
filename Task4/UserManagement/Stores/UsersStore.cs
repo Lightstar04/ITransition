@@ -1,19 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
-using UserManagement.Domain.Entities;
-using UserManagement.Domain.Enums;
-using UserManagement.Domain.Exceptions;
-using UserManagement.Infrastructure;
-using UserManagement.ViewModels.User;
+using UserManagement.Data;
+using UserManagement.Entities;
+using UserManagement.Enums;
+using UserManagement.Exceptions;
 
 namespace UserManagement.Stores
 {
     public class UsersStore
     {
+        private readonly UserManagementDbContext _context;
+
+        public UsersStore(UserManagementDbContext context)
+        {
+            _context = context;
+        }
         public List<User> Get(string? search)
         {
-            using var context = new UserManagementDbContext();
-            var query = context.Users.AsQueryable();
+            var query = _context.Users.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -25,12 +28,10 @@ namespace UserManagement.Stores
 
         public void SignUp(User user)
         {
-            using var context = new UserManagementDbContext();
-
             try
             {
-                context.Users.Add(user);
-                context.SaveChanges();
+                _context.Users.Add(user);
+                _context.SaveChanges();
             }
             catch(DbUpdateException ex) when(ex.InnerException?.Message.Contains("IX_Users_Email") == true)
             {
@@ -39,10 +40,8 @@ namespace UserManagement.Stores
         }
 
         public bool SignIn(string email, string password)
-        {
-            using var context = new UserManagementDbContext();
-            
-            var user = context.Users.FirstOrDefault(u => u.Email == email);
+        {            
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
 
             if (user == null || user.Status == UserStatus.Blocked || user.Password != password)
             {
@@ -50,32 +49,29 @@ namespace UserManagement.Stores
             }
 
             user.LastLoginTime = DateTime.Now;
-            context.SaveChanges();
+            _context.SaveChanges();
 
             return true;
         }
 
         public void ButtonOperation(string[] selected, string operation)
         {
-            using var context = new UserManagementDbContext();
-
             var ids  = selected.Select(int.Parse).ToList();
-            var users = context.Users.Where(u => ids.Contains(u.Id)).ToList();
+            var users = _context.Users.Where(u => ids.Contains(u.Id)).ToList();
 
             if (operation == "block")
                 users.ForEach(u => u.Status = UserStatus.Blocked);
             else if (operation == "unblock")
                 users.ForEach(u => u.Status = UserStatus.Active);
             else if (operation == "delete")
-                context.Users.RemoveRange(users);
+                _context.Users.RemoveRange(users);
 
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public User? GetUserByEmail(string email)
         {
-            using var context = new UserManagementDbContext();
-            return context.Users.FirstOrDefault(u => u.Email == email);
+            return _context.Users.FirstOrDefault(u => u.Email == email);
         }
     }
 }

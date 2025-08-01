@@ -1,4 +1,4 @@
-﻿using UserManagement.Domain.Enums;
+﻿using UserManagement.Enums;
 
 namespace UserManagement.ViewModels.User
 {
