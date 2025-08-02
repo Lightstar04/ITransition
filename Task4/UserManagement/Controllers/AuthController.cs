@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using UserManagement.Entities;
 using UserManagement.Extensions;
 using UserManagement.Stores;
@@ -56,7 +58,16 @@ namespace UserManagement.Controllers
                 return View();
             }
 
-            HttpContext.Session.SetString("UserEmail", email);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, email)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+
+            HttpContext.SignInAsync("Cookies", principal);
+            
             return RedirectToAction("Index", "Users");
         }
     }

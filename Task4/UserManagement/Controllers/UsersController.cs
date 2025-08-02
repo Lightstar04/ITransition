@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UserManagement.Enums;
 using UserManagement.Extensions;
 using UserManagement.Stores;
 
 namespace UserManagement.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly UsersStore _store;
@@ -26,9 +28,9 @@ namespace UserManagement.Controllers
 
         public IActionResult Action(string[] selected, string operation)
         {
-            var email = HttpContext.Session.GetString("UserEmail");
+            var email = User.Identity?.Name;
 
-            if(string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(email))
             {
                 return RedirectToAction("Login", "Auth");
             }

@@ -30,6 +30,13 @@ try
         .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtectionKeys")))
         .SetApplicationName("UserManagement");
 
+    builder.Services.AddAuthentication("Cookies")
+        .AddCookie("Cookies", options =>
+        {
+            options.LoginPath = "/Auth/Login";
+            options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        });
+
     Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JEaF5cXmRCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXhcd3RXRWVYVk1/V0VWYEk=");
 
     var app = builder.Build();
@@ -48,6 +55,7 @@ try
 
     app.UseSession();
 
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapStaticAssets();
