@@ -67,19 +67,19 @@ public class BookController : Controller
         return books;
     }
 
-    private int GenerateCount(double avg, Faker faker)
+    private int GenerateCount(float avg, Faker faker)
     {
         if (avg != 0)
         {
             if (avg < 1)
-                return faker.Random.Bool((float)avg) ? 1 : 0;
+                return faker.Random.Bool(avg) ? 1 : 0;
             return (int)Math.Floor(avg);
         }
 
         return 0;
     }
 
-    private List<Review> GenerateReviews(double avgReviews, Faker faker)
+    private List<Review> GenerateReviews(float avgReviews, Faker faker)
     {
         var reviews = new List<Review>();
 
