@@ -51,6 +51,7 @@
     let page = 1;
     let loading = false;
     let lastConfig = {};
+    let index = 1;
 
     function randomizeSeed(){
         seedInput.value = Math.floor(Math.random() * 100000);
@@ -60,6 +61,7 @@
     function resetTable(){
         tableBody.innerHTML = "";
         page = 1;
+        index = 1;
         loadBooks();
     }
 
@@ -86,7 +88,7 @@
                 data.forEach(book => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${book.index}</td>
+                        <td>${index++}</td>
                         <td>${book.isbn}</td>
                         <td>${book.title}</td>
                         <td>${book.author}</td>

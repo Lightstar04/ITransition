@@ -4,9 +4,6 @@ namespace BookStoreManager.Models;
 
 public class Book
 {
-    [JsonPropertyName("index")]
-    public int Index {  get; set; }
-
     [JsonPropertyName("isbn")]
     public string Isbn { get; set; }
 

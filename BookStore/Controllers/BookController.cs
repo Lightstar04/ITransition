@@ -2,7 +2,6 @@
 using BookStoreManager.Models;
 using Humanizer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -31,7 +30,7 @@ public class BookController : Controller
         var faker = new Faker(locale: language);
         faker.Random = new Randomizer(combinedSeed);
 
-        var books = GenerateBooks(total, page, faker, avgLikes, avgReviews);
+        var books = GenerateBooks(total, faker, avgLikes, avgReviews);
 
         return Ok(books);
     }
@@ -45,15 +44,13 @@ public class BookController : Controller
     }
 
     private List<Book> GenerateBooks(
-        int total, int page,
-        Faker faker, float avgLikes,
-        float avgReviews)
+        int total, Faker faker, 
+        float avgLikes, float avgReviews)
     {
         var books = Enumerable.Range(1, total).Select(index =>
         {
             var book = new Book
             {
-                Index = (page - 1) * 10 + index,
                 Isbn = faker.Random.Replace("###-#-###-#####"),
                 Title = faker.Lorem.Sentence(3, 3).Titleize(),
                 Author = string.Join(",", faker.Make(faker.Random.Int(1, 3), () => faker.Name.FullName())),
